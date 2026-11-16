@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Gabarito — Prova PL/SQL — Turma A — LOJAVILELA</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;line-height:1.5;color:#111}
+h1{font-size:24px} h2{font-size:19px;margin-top:28px}
+.alert{background:#fff3cd;border:1px solid #e6c200;border-radius:10px;padding:14px}
+.alert b{color:#7a5b00}
+.q{border:1px solid #ddd;border-radius:12px;padding:14px;margin:14px 0;page-break-inside:avoid}
+.qhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.qn{font-size:18px;font-weight:bold}
+.ans{background:#e6f4ea;border:1px solid #2e7d32;border-radius:8px;padding:4px 10px}
+.enun{white-space:pre-wrap;background:#f7f7ff;border-left:4px solid #333;padding:10px}
+pre{background:#f4f4f4;border-radius:8px;padding:12px;white-space:pre-wrap;font-family:Consolas,monospace;font-size:13px;overflow-x:auto}
+summary{cursor:pointer;font-weight:bold;margin:8px 0}
+.why{background:#eef6ff;border-radius:8px;padding:10px}
+table{border-collapse:collapse;width:100%} th,td{border:1px solid #bbb;padding:6px 8px;text-align:left} th{background:#1F4E78;color:#fff}
+@media print{ details{display:block} summary{display:none} }
+</style></head><body>
+<h1>Gabarito — Prova Prática — PL/SQL — Turma A — LOJAVILELA</h1>
+<p>Prova valendo <b>3,0</b> — 29 objetivas (até 2,4, cada uma vale 0,083) + Q30 descritiva (até 0,6).</p>
+<div class="alert"><b>⚠️ Atenção — leia antes de comparar:</b> na prova, as letras A–D eram <b>embaralhadas para cada aluno</b> (pelo Nome + RA). Por isso a letra que cada aluno viu pode ser diferente. <b>O que vale é o conteúdo do bloco correto</b>, não a letra. Compare o bloco que você marcou com o bloco correto abaixo.</div>
+
+<h2>Resumo rápido</h2>
+<table><tr><th>Questão</th><th>Resposta (ordem-base)</th><th>Resumo</th></tr>
+<tr><td>Q01</td><td><b>A</b></td><td>SELECT INTO + WHEN NO_DATA_FOUND</td></tr><tr><td>Q02</td><td><b>B</b></td><td>Vários clientes em Maringá → TOO_MANY_ROWS → &#x27;Muitos&#x27;</td></tr><tr><td>Q03</td><td><b>C</b></td><td>IF &gt; 200, ELSIF &gt; 100, ELSE</td></tr><tr><td>Q04</td><td><b>C</b></td><td>Atribuição em PL/SQL é :=, não =</td></tr><tr><td>Q05</td><td><b>A</b></td><td>CURSOR FOR LOOP dispensa OPEN / FETCH / CLOSE</td></tr><tr><td>Q06</td><td><b>D</b></td><td>FETCH → EXIT WHEN %NOTFOUND → imprime → CLOSE</td></tr><tr><td>Q07</td><td><b>C</b></td><td>OPEN c(&#x27;online&#x27;) + LOOP + FETCH + CLOSE</td></tr><tr><td>Q08</td><td><b>B</b></td><td>Imprime 1, 2, 3</td></tr><tr><td>Q09</td><td><b>A</b></td><td>1ª venda: qtd 1 (cont=1, não soma). 2ª: qtd 5 (cont=2, total=5) → EXIT WHEN cont=2 para antes da 3ª</td></tr><tr><td>Q10</td><td><b>D</b></td><td>FOR 1..3 imprime 10, 20, 30</td></tr><tr><td>Q11</td><td><b>C</b></td><td>Declara a exceção, levanta com RAISE e trata com WHEN e_estoque_baixo</td></tr><tr><td>Q12</td><td><b>B</b></td><td>WHEN NO_DATA_FOUND e depois WHEN OTHERS com SQLERRM + RAISE</td></tr><tr><td>Q13</td><td><b>A</b></td><td>BEFORE INSERT + :NEW.qtd &lt;= 0 + RAISE_APPLICATION_ERROR</td></tr><tr><td>Q14</td><td><b>D</b></td><td>BEFORE UPDATE + :NEW.preco &lt; :OLD.preco + RAISE -20002</td></tr><tr><td>Q15</td><td><b>C</b></td><td>BEFORE DELETE + :OLD.plano = &#x27;VIP&#x27; + RAISE -20003</td></tr><tr><td>Q16</td><td><b>B</b></td><td>BEFORE INSERT + :NEW.valor_total IS NULL + := qtd * 50</td></tr><tr><td>Q17</td><td><b>A</b></td><td>Estoque 4 &lt; mínimo 5 → entra no 1º IF. Preço 150 NÃO é &gt; 200 → &#x27;Repor - Barato&#x27;</td></tr><tr><td>Q18</td><td><b>D</b></td><td>IF v_reg.plano = &#x27;VIP&#x27; ... ELSE ... + CLOSE</td></tr><tr><td>Q19</td><td><b>C</b></td><td>O trigger está correto</td></tr><tr><td>Q20</td><td><b>D</b></td><td>Rotina temporária, não armazenada, com IF → bloco anônimo</td></tr><tr><td>Q21</td><td><b>D</b></td><td>A afirmação INCORRETA é a D</td></tr><tr><td>Q22</td><td><b>C</b></td><td>Valor duplicado em índice único → DUP_VALUE_ON_INDEX</td></tr><tr><td>Q23</td><td><b>D</b></td><td>Imprime 10, 9, 8, 7, 6, 5 → 6 linhas</td></tr><tr><td>Q24</td><td><b>B</b></td><td>Os 4 atributos: %ROWCOUNT, %FOUND, %NOTFOUND, %ISOPEN</td></tr><tr><td>Q25</td><td><b>B</b></td><td>FETCH transfere o registro e avança o ponteiro</td></tr><tr><td>Q26</td><td><b>D</b></td><td>Corretas: I e II. III é falsa</td></tr><tr><td>Q27</td><td><b>C</b></td><td>IF ... THEN ... END IF;</td></tr><tr><td>Q28</td><td><b>D</b></td><td>SQL%NOTFOUND / SQL%FOUND / SQL%ROWCOUNT</td></tr><tr><td>Q29</td><td><b>C</b></td><td>A sintaxe correta é END IF, não ENDIF</td></tr>
+<tr><td>Q30</td><td>Descritiva</td><td>Ver modelo abaixo — 0,2 SELECT INTO + 0,2 IF/ELSIF/ELSE + 0,2 EXCEPTION</td></tr>
+</table>
+
+<h2>Questão por questão — bloco correto + por quê</h2>
+
+<section class="q">
+  <div class="qhead"><span class="qn">Q01</span> <span class="ans">Resposta correta: <b>A — SELECT INTO + WHEN NO_DATA_FOUND</b></span></div>
+  <p class="enun">A loja LOJAVILELA precisa buscar o nome de um cliente para exibir na tela. O atendente digitou o código 99, que pode não existir. O sistema deve mostrar o nome se existir, e mostrar &#x27;Cliente não encontrado&#x27; se não existir. Qual bloco faz exatamente isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  v_nome CLIENTES.nome%TYPE;
+BEGIN
+  SELECT nome INTO v_nome
+    FROM CLIENTES
+   WHERE id_cliente = 99;
+  DBMS_OUTPUT.PUT_LINE(v_nome);
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Cliente não encontrado&#x27;);
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> B usa TOO_MANY_ROWS (errada para 0 linhas). C falta o INTO. D imprime a variável vazia no EXCEPTION.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q02</span> <span class="ans">Resposta correta: <b>B — Vários clientes em Maringá → TOO_MANY_ROWS → &#x27;Muitos&#x27;</b></span></div>
+  <p class="enun">A loja quer listar o nome de UM cliente da cidade de Maringá. Mas na tabela CLIENTES já existem VÁRIOS clientes em Maringá. O programador escreveu o bloco abaixo. O que será impresso quando ele rodar?
+
+DECLARE
+  v_nome CLIENTES.nome%TYPE;
+BEGIN
+  SELECT nome INTO v_nome
+    FROM CLIENTES
+   WHERE cidade = &#x27;Maringá&#x27;;
+  DBMS_OUTPUT.PUT_LINE(&#x27;Achado: &#x27; || v_nome);
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Nenhum&#x27;);
+  WHEN TOO_MANY_ROWS THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Muitos&#x27;);
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>Muitos</pre></details>
+  <p class="why"><b>Por quê:</b> SELECT INTO exige exatamente 1 linha. Com várias linhas, cai em TOO_MANY_ROWS.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q03</span> <span class="ans">Resposta correta: <b>C — IF &gt; 200, ELSIF &gt; 100, ELSE</b></span></div>
+  <p class="enun">A loja quer classificar um produto pelo preço para decidir o desconto. Regra: se preço &gt; 200 imprime &#x27;Caro&#x27;, se preço &gt; 100 imprime &#x27;Médio&#x27;, senão imprime &#x27;Barato&#x27;. O produto é o de id_produto = 10. Qual bloco faz exatamente isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  v_preco PRODUTOS.preco%TYPE;
+BEGIN
+  SELECT preco INTO v_preco
+    FROM PRODUTOS
+   WHERE id_produto = 10;
+  IF v_preco &gt; 200 THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Caro&#x27;);
+  ELSIF v_preco &gt; 100 THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Médio&#x27;);
+  ELSE
+    DBMS_OUTPUT.PUT_LINE(&#x27;Barato&#x27;);
+  END IF;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A falta o ELSE. B usa = em vez de &gt;. D testa &gt; 100 antes de &gt; 200 e nunca chega em &#x27;Caro&#x27;.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q04</span> <span class="ans">Resposta correta: <b>C — Atribuição em PL/SQL é :=, não =</b></span></div>
+  <p class="enun">O gerente pediu para somar 2 na quantidade de uma venda e mostrar o resultado. Um estagiário escreveu 4 blocos. Qual deles tem erro e por quê?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  v_qtd NUMBER := 0;
+BEGIN
+  v_qtd = v_qtd + 2;
+  DBMS_OUTPUT.PUT_LINE(v_qtd);
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> C usa v_qtd = v_qtd + 2. As demais estão sintaticamente corretas.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q05</span> <span class="ans">Resposta correta: <b>A — CURSOR FOR LOOP dispensa OPEN / FETCH / CLOSE</b></span></div>
+  <p class="enun">A loja precisa imprimir o nome de TODOS os produtos que estão abaixo do estoque mínimo, para fazer reposição. O programador não quer usar OPEN, FETCH nem CLOSE. Qual bloco faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>BEGIN
+  FOR r IN (SELECT nome_produto
+              FROM PRODUTOS
+             WHERE estoque &lt; estoque_min) LOOP
+    DBMS_OUTPUT.PUT_LINE(r.nome_produto);
+  END LOOP;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> B faz só 1 FETCH e não fecha. C usa CLOSE sem OPEN. D usa nome_produto sem o prefixo r.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q06</span> <span class="ans">Resposta correta: <b>D — FETCH → EXIT WHEN %NOTFOUND → imprime → CLOSE</b></span></div>
+  <p class="enun">A loja precisa imprimir o nome de TODOS os clientes ativos (ativo = &#x27;S&#x27;), um por linha, até acabar. Qual bloco percorre todos e termina corretamente, sem imprimir linha em branco no final e sem deixar o cursor aberto?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  CURSOR c IS
+    SELECT nome FROM CLIENTES WHERE ativo = &#x27;S&#x27;;
+  v_reg c%ROWTYPE;
+BEGIN
+  OPEN c;
+  LOOP
+    FETCH c INTO v_reg;
+    EXIT WHEN c%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(v_reg.nome);
+  END LOOP;
+  CLOSE c;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A imprime antes do EXIT e gera linha em branco no fim. B não fecha o cursor. C faz FETCH em 2 variáveis para 1 coluna.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q07</span> <span class="ans">Resposta correta: <b>C — OPEN c(&#x27;online&#x27;) + LOOP + FETCH + CLOSE</b></span></div>
+  <p class="enun">A loja quer um relatório de vendas de UM canal por vez. O usuário vai informar o canal (&#x27;online&#x27;, &#x27;loja&#x27;...). O programador deve usar um cursor que RECEBE o canal como parâmetro. Qual bloco está correto?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  CURSOR c(p_canal VENDAS.canal%TYPE) IS
+    SELECT id_venda FROM VENDAS WHERE canal = p_canal;
+  v_id VENDAS.id_venda%TYPE;
+BEGIN
+  OPEN c(&#x27;online&#x27;);
+  LOOP
+    FETCH c INTO v_id;
+    EXIT WHEN c%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(v_id);
+  END LOOP;
+  CLOSE c;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A abre sem parâmetro. B usa FOR sem passar o parâmetro. D declara o cursor sem parâmetro e tenta abrir com parâmetro.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q08</span> <span class="ans">Resposta correta: <b>B — Imprime 1, 2, 3</b></span></div>
+  <p class="enun">O sistema precisa imprimir os números de 1 a 3 na tela, para testar o LOOP. O programador escreveu o bloco abaixo. O que será impresso?
+
+DECLARE
+  v_i NUMBER := 1;
+BEGIN
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(v_i);
+    v_i := v_i + 1;
+    EXIT WHEN v_i &gt; 3;
+  END LOOP;
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>1, 2, 3</pre></details>
+  <p class="why"><b>Por quê:</b> Imprime, soma, testa: após imprimir 3, v_i vira 4 e EXIT WHEN v_i &gt; 3 sai. Não imprime 4.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q09</span> <span class="ans">Resposta correta: <b>A — 1ª venda: qtd 1 (cont=1, não soma). 2ª: qtd 5 (cont=2, total=5) → EXIT WHEN cont=2 para antes da 3ª</b></span></div>
+  <p class="enun">ALTA - A loja quer somar as vendas online, mas só as com qtd &gt; 2, e parar depois de analisar 2 vendas. As 3 primeiras vendas online têm qtd = 1, 5, 4, nesta ordem. Analise o bloco abaixo com atenção, passo a passo. O que será impresso no final?
+
+DECLARE
+  CURSOR c IS SELECT qtd FROM VENDAS WHERE canal = &#x27;online&#x27;;
+  v_reg c%ROWTYPE;
+  v_total NUMBER := 0;
+  v_cont  NUMBER := 0;
+BEGIN
+  OPEN c;
+  LOOP
+    FETCH c INTO v_reg;
+    EXIT WHEN c%NOTFOUND;
+    v_cont := v_cont + 1;
+    IF v_reg.qtd &gt; 2 THEN
+      v_total := v_total + v_reg.qtd;
+    END IF;
+    EXIT WHEN v_cont = 2;
+  END LOOP;
+  CLOSE c;
+  DBMS_OUTPUT.PUT_LINE(&#x27;Total=&#x27; || v_total || &#x27; Cont=&#x27; || v_cont);
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>Total=5 Cont=2</pre></details>
+  <p class="why"><b>Por quê:</b> A 3ª venda (qtd 4) nunca é analisada, por isso o total não chega a 9.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q10</span> <span class="ans">Resposta correta: <b>D — FOR 1..3 imprime 10, 20, 30</b></span></div>
+  <p class="enun">A loja quer imprimir a tabuada do 10 para os 3 primeiros números: 1x10, 2x10, 3x10. O que será impresso?
+
+BEGIN
+  FOR i IN 1..3 LOOP
+    DBMS_OUTPUT.PUT_LINE(i * 10);
+  END LOOP;
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>10, 20, 30</pre></details>
+  <p class="why"><b>Por quê:</b> FOR já controla o contador; não há 4ª iteração.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q11</span> <span class="ans">Resposta correta: <b>C — Declara a exceção, levanta com RAISE e trata com WHEN e_estoque_baixo</b></span></div>
+  <p class="enun">A loja não pode vender produto com estoque negativo. O programador criou uma exceção própria chamada e_estoque_baixo, para levantar quando estoque &lt; 0. Qual bloco cria, levanta e trata essa exceção corretamente?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  e_estoque_baixo EXCEPTION;
+  v_est PRODUTOS.estoque%TYPE;
+BEGIN
+  SELECT estoque INTO v_est
+    FROM PRODUTOS
+   WHERE id_produto = 5;
+  IF v_est &lt; 0 THEN
+    RAISE e_estoque_baixo;
+  END IF;
+  DBMS_OUTPUT.PUT_LINE(&#x27;OK&#x27;);
+EXCEPTION
+  WHEN e_estoque_baixo THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Estoque negativo&#x27;);
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A usa a exceção sem declarar. B e D tratam outra exceção (OTHERS / NO_DATA_FOUND).</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q12</span> <span class="ans">Resposta correta: <b>B — WHEN NO_DATA_FOUND e depois WHEN OTHERS com SQLERRM + RAISE</b></span></div>
+  <p class="enun">A loja quer tratar o caso &#x27;cliente não encontrado&#x27; de um jeito, e qualquer OUTRO erro inesperado de outro jeito, sem esconder o erro. Qual bloco usa WHEN OTHERS corretamente, como última captura?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  v_nome CLIENTES.nome%TYPE;
+BEGIN
+  SELECT nome INTO v_nome FROM CLIENTES WHERE id_cliente = 1;
+  DBMS_OUTPUT.PUT_LINE(v_nome);
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Sem cliente&#x27;);
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Erro: &#x27; || SQLERRM);
+    RAISE;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> WHEN OTHERS deve ser a última e não pode esconder o erro: precisa do RAISE.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q13</span> <span class="ans">Resposta correta: <b>A — BEFORE INSERT + :NEW.qtd &lt;= 0 + RAISE_APPLICATION_ERROR</b></span></div>
+  <p class="enun">A loja não pode registrar venda com quantidade zero ou negativa. O dono pediu um trigger que BARRE a inserção nesses casos. Qual trigger faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>CREATE OR REPLACE TRIGGER trg_venda_qtd
+BEFORE INSERT ON VENDAS
+FOR EACH ROW
+BEGIN
+  IF :NEW.qtd &lt;= 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, &#x27;Quantidade deve ser maior que zero&#x27;);
+  END IF;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> B usa :OLD (não existe em INSERT). C é AFTER (tarde demais). D falta FOR EACH ROW.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q14</span> <span class="ans">Resposta correta: <b>D — BEFORE UPDATE + :NEW.preco &lt; :OLD.preco + RAISE -20002</b></span></div>
+  <p class="enun">A loja decidiu: o preço de um produto NUNCA pode ser reduzido, só aumentado. O dono pediu um trigger que BARRE a redução. Qual trigger faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>CREATE OR REPLACE TRIGGER trg_preco
+BEFORE UPDATE ON PRODUTOS
+FOR EACH ROW
+BEGIN
+  IF :NEW.preco &lt; :OLD.preco THEN
+    RAISE_APPLICATION_ERROR(-20002, &#x27;Preço não pode ser reduzido&#x27;);
+  END IF;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A testa ao contrário. B só imprime, não barra. C usa código positivo (deve ser negativo, -20000 a -20999).</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q15</span> <span class="ans">Resposta correta: <b>C — BEFORE DELETE + :OLD.plano = &#x27;VIP&#x27; + RAISE -20003</b></span></div>
+  <p class="enun">A loja não pode excluir cliente VIP, porque ele tem histórico e benefícios. O dono pediu um trigger que BARRE a exclusão de cliente VIP. Qual trigger faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>CREATE OR REPLACE TRIGGER trg_del_cliente
+BEFORE DELETE ON CLIENTES
+FOR EACH ROW
+BEGIN
+  IF :OLD.plano = &#x27;VIP&#x27; THEN
+    RAISE_APPLICATION_ERROR(-20003, &#x27;Não pode excluir cliente VIP&#x27;);
+  END IF;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A só imprime. B é BEFORE INSERT. D usa :NEW (não existe em DELETE).</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q16</span> <span class="ans">Resposta correta: <b>B — BEFORE INSERT + :NEW.valor_total IS NULL + := qtd * 50</b></span></div>
+  <p class="enun">No caixa, às vezes o vendedor esquece de digitar o valor_total. A loja quer que, ao inserir uma venda com valor_total nulo, o sistema complete sozinho como qtd * 50, ANTES de gravar. Qual trigger faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>CREATE OR REPLACE TRIGGER trg_valor
+BEFORE INSERT ON VENDAS
+FOR EACH ROW
+BEGIN
+  IF :NEW.valor_total IS NULL THEN
+    :NEW.valor_total := :NEW.qtd * 50;
+  END IF;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A usa = em vez de :=. C altera :OLD. D usa = NULL (nulo nunca é igual a nulo).</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q17</span> <span class="ans">Resposta correta: <b>A — Estoque 4 &lt; mínimo 5 → entra no 1º IF. Preço 150 NÃO é &gt; 200 → &#x27;Repor - Barato&#x27;</b></span></div>
+  <p class="enun">ALTA - O estoque do produto 7 está em 4, o estoque mínimo é 5 e o preço é 150. O programador quer trazer a LINHA INTEIRA do produto com %ROWTYPE e decidir. O que será impresso?
+
+DECLARE
+  v_prod PRODUTOS%ROWTYPE;
+BEGIN
+  SELECT * INTO v_prod FROM PRODUTOS WHERE id_produto = 7;
+  IF v_prod.estoque &lt; v_prod.estoque_min THEN
+    IF v_prod.preco &gt; 200 THEN
+      DBMS_OUTPUT.PUT_LINE(&#x27;Repor urgente - Caro&#x27;);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(&#x27;Repor - Barato&#x27;);
+    END IF;
+  ELSE
+    DBMS_OUTPUT.PUT_LINE(&#x27;OK&#x27;);
+  END IF;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE(&#x27;Produto não encontrado&#x27;);
+  WHEN TOO_MANY_ROWS THEN DBMS_OUTPUT.PUT_LINE(&#x27;Duplicado&#x27;);
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>Repor - Barato</pre></details>
+  <p class="why"><b>Por quê:</b> Se o preço fosse &gt; 200 seria &#x27;Repor urgente - Caro&#x27;. Se estoque &gt;= mínimo seria &#x27;OK&#x27;.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q18</span> <span class="ans">Resposta correta: <b>D — IF v_reg.plano = &#x27;VIP&#x27; ... ELSE ... + CLOSE</b></span></div>
+  <p class="enun">A loja quer imprimir, para cada cliente, o nome + &#x27; - VIP&#x27; se o plano for VIP, e &#x27; - Normal&#x27; nos demais. Qual bloco percorre TODOS os clientes e faz isso?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DECLARE
+  CURSOR c IS SELECT nome, plano FROM CLIENTES;
+  v_reg c%ROWTYPE;
+BEGIN
+  OPEN c;
+  LOOP
+    FETCH c INTO v_reg;
+    EXIT WHEN c%NOTFOUND;
+    IF v_reg.plano = &#x27;VIP&#x27; THEN
+      DBMS_OUTPUT.PUT_LINE(v_reg.nome || &#x27; - VIP&#x27;);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(v_reg.nome || &#x27; - Normal&#x27;);
+    END IF;
+  END LOOP;
+  CLOSE c;
+END;</pre></details>
+  <p class="why"><b>Por quê:</b> A usa plano sem prefixo. B não tem ELSE (não imprime &#x27;Normal&#x27;). C repete a mesma condição no ELSIF.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q19</span> <span class="ans">Resposta correta: <b>C — O trigger está correto</b></span></div>
+  <p class="enun">ALTA - A loja quer barrar a venda se o estoque do produto for menor que a quantidade vendida. Um aluno escreveu o trigger abaixo. Analise com calma: ele tem DECLARE? Pode usar SELECT INTO? Pode usar :NEW em BEFORE INSERT?
+
+CREATE OR REPLACE TRIGGER trg_baixa_estoque
+BEFORE INSERT ON VENDAS
+FOR EACH ROW
+DECLARE
+  v_est PRODUTOS.estoque%TYPE;
+BEGIN
+  SELECT estoque INTO v_est
+    FROM PRODUTOS
+   WHERE id_produto = :NEW.id_produto;
+  IF v_est &lt; :NEW.qtd THEN
+    RAISE_APPLICATION_ERROR(-20004, &#x27;Estoque insuficiente&#x27;);
+  END IF;
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>Nada, o trigger está correto</pre></details>
+  <p class="why"><b>Por quê:</b> Trigger pode ter DECLARE, pode usar SELECT INTO e pode usar :NEW em BEFORE INSERT. :OLD.qtd não existe em INSERT.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q20</span> <span class="ans">Resposta correta: <b>D — Rotina temporária, não armazenada, com IF → bloco anônimo</b></span></div>
+  <p class="enun">TEÓRICA - BLOCO ANÔNIMO: Um DBA precisa de uma rotina TEMPORÁRIA para ajustar valores em uma tabela, somando um bônus fixo só para um departamento. Ela NÃO precisa ser armazenada para reutilização futura e precisa usar IF. Qual estrutura é a mais adequada?</p>
+  <details open><summary>Ver bloco correto</summary><pre>Bloco anônimo</pre></details>
+  <p class="why"><b>Por quê:</b> VIEW, TRIGGER e FUNCTION são objetos armazenados.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q21</span> <span class="ans">Resposta correta: <b>D — A afirmação INCORRETA é a D</b></span></div>
+  <p class="enun">TEÓRICA - SELECT INTO + SUM: Um analista escreveu:
+DECLARE
+  v_total NUMBER;
+BEGIN
+  SELECT SUM(valor) INTO v_total
+    FROM pagamentos
+   WHERE categoria = &#x27;IMPOSTO&#x27;;
+  DBMS_OUTPUT.PUT_LINE(&#x27;Total: &#x27; || v_total);
+END;
+Qual das afirmações abaixo é INCORRETA sobre esse código?</p>
+  <details open><summary>Ver bloco correto</summary><pre>O comando SELECT INTO pode falhar se a consulta retornar múltiplas linhas.</pre></details>
+  <p class="why"><b>Por quê:</b> SUM() agrega em 1 única linha: SELECT INTO com agregado não gera TOO_MANY_ROWS.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q22</span> <span class="ans">Resposta correta: <b>C — Valor duplicado em índice único → DUP_VALUE_ON_INDEX</b></span></div>
+  <p class="enun">TEÓRICA - EXCEÇÃO: Em PL/SQL, qual exceção é gerada quando se tenta armazenar um valor duplicado em uma coluna com índice exclusivo?</p>
+  <details open><summary>Ver bloco correto</summary><pre>DUP_VALUE_ON_INDEX</pre></details>
+  <p class="why"><b>Por quê:</b> TOO_MANY_ROWS é SELECT INTO com várias linhas. VALUE_ERROR é conversão/tamanho. NO_DATA_FOUND é 0 linhas.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q23</span> <span class="ans">Resposta correta: <b>D — Imprime 10, 9, 8, 7, 6, 5 → 6 linhas</b></span></div>
+  <p class="enun">TEÓRICA - LOOP: Considere o código CORRIGIDO abaixo. O que será impresso?
+DECLARE
+  v_num NUMBER := 10;
+BEGIN
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(v_num);
+    v_num := v_num - 1;
+    EXIT WHEN v_num &lt; 5;
+  END LOOP;
+END;</p>
+  <details open><summary>Ver bloco correto</summary><pre>6 linhas numeradas de 10 a 5</pre></details>
+  <p class="why"><b>Por quê:</b> Após imprimir 5, v_num vira 4 e EXIT WHEN v_num &lt; 5 sai.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q24</span> <span class="ans">Resposta correta: <b>B — Os 4 atributos: %ROWCOUNT, %FOUND, %NOTFOUND, %ISOPEN</b></span></div>
+  <p class="enun">TEÓRICA - ATRIBUTOS DE CURSOR: Em Oracle, para cursores implícitos e explícitos, quais são os 4 atributos que podem ser usados em PL/SQL?</p>
+  <details open><summary>Ver bloco correto</summary><pre>SQL%ROWCOUNT, SQL%FOUND, SQL%NOTFOUND, SQL%ISOPEN</pre></details>
+  <p class="why"><b>Por quê:</b> %CLEAR, %COUNTLINE, %FIND, %NOTOPEN não existem.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q25</span> <span class="ans">Resposta correta: <b>B — FETCH transfere o registro e avança o ponteiro</b></span></div>
+  <p class="enun">TEÓRICA - FETCH: Qual funcionalidade transfere o conteúdo do registro corrente para as variáveis correspondentes e posiciona o ponteiro do cursor no próximo registro?</p>
+  <details open><summary>Ver bloco correto</summary><pre>FETCH</pre></details>
+  <p class="why"><b>Por quê:</b> %FOUND, %NOTFOUND e %ISOPEN são atributos, não comandos.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q26</span> <span class="ans">Resposta correta: <b>D — Corretas: I e II. III é falsa</b></span></div>
+  <p class="enun">TEÓRICA - RAISE_APPLICATION_ERROR: Sobre exceções em PL/SQL (Oracle 12c), analise:
+I. RAISE_APPLICATION_ERROR permite texto e número entre -20000 e -20999.
+II. Uma exceção pode ser levantada explicitamente com RAISE.
+III. A cláusula EXCEPTION sempre deve ser seguida só por exceções da biblioteca do Oracle.
+É correto o que se afirma em:</p>
+  <details open><summary>Ver bloco correto</summary><pre>I e II, apenas</pre></details>
+  <p class="why"><b>Por quê:</b> RAISE_APPLICATION_ERROR: -20000 a -20999. RAISE levanta exceção. EXCEPTION pode tratar exceção definida pelo usuário.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q27</span> <span class="ans">Resposta correta: <b>C — IF ... THEN ... END IF;</b></span></div>
+  <p class="enun">TEÓRICA - IF: Em PL/SQL, assinale a alternativa escrita de forma correta para um bloco anônimo (sem RETURN). Considere v_total já declarado.</p>
+  <details open><summary>Ver bloco correto</summary><pre>IF v_total &lt; 10000 THEN DBMS_OUTPUT.PUT_LINE(&#x27;barato&#x27;); END IF;</pre></details>
+  <p class="why"><b>Por quê:</b> A falta THEN. B usa RETURN (não há RETURN em bloco anônimo). D termina com IF; em vez de END IF;</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q28</span> <span class="ans">Resposta correta: <b>D — SQL%NOTFOUND / SQL%FOUND / SQL%ROWCOUNT</b></span></div>
+  <p class="enun">TEÓRICA - SQL%ROWCOUNT: Considere:
+DECLARE var_x NUMBER;
+BEGIN
+  UPDATE calendario SET dia = dia + 1;
+  IF ... THEN DBMS_OUTPUT.PUT_LINE(&#x27;Zero alterados.&#x27;);
+  ELSIF ... THEN var_x := ...; DBMS_OUTPUT.PUT_LINE(var_x || &#x27; alterados.&#x27;);
+  END IF;
+END;
+Para funcionar, os 3 trechos devem ser, na ordem:</p>
+  <details open><summary>Ver bloco correto</summary><pre>SQL%NOTFOUND / SQL%FOUND / SQL%ROWCOUNT</pre></details>
+  <p class="why"><b>Por quê:</b> %ROWCOUNT diz quantas linhas o UPDATE alterou.</p>
+</section>
+<section class="q">
+  <div class="qhead"><span class="qn">Q29</span> <span class="ans">Resposta correta: <b>C — A sintaxe correta é END IF, não ENDIF</b></span></div>
+  <p class="enun">TEÓRICA - END IF: O código abaixo não compila:
+BEGIN
+  IF SYSDATE &gt; TO_DATE(&#x27;05-JUL-2022&#x27;,&#x27;DD-MON-YYYY&#x27;) THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Um ano muito diferente&#x27;);
+  ENDIF;
+END;
+Qual é a solução?</p>
+  <details open><summary>Ver bloco correto</summary><pre>A sintaxe correta para terminar o IF é END IF e não ENDIF.</pre></details>
+  <p class="why"><b>Por quê:</b> PL/SQL não é case-sensitive e IF/THEN podem estar na mesma linha.</p>
+</section>
+
+<h2>Q30 — Descritiva (até 0,6) — resposta modelo</h2>
+<p><b>Problema:</b> Buscar com SELECT INTO o estoque e o estoque_min do produto id_produto = 20; com IF / ELSIF / ELSE, imprimir 'Repor urgente' se estoque &lt; estoque_min, 'Atenção' se estoque = estoque_min, 'OK' nos demais; se o produto não existir, capturar a exceção e imprimir 'Produto não encontrado'. Usar %TYPE.</p>
+<pre>DECLARE
+  v_estoque     PRODUTOS.estoque%TYPE;
+  v_estoque_min PRODUTOS.estoque_min%TYPE;
+BEGIN
+  SELECT estoque, estoque_min
+    INTO v_estoque, v_estoque_min
+    FROM PRODUTOS
+   WHERE id_produto = 20;
+
+  IF v_estoque &lt; v_estoque_min THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Repor urgente&#x27;);
+  ELSIF v_estoque = v_estoque_min THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Atenção&#x27;);
+  ELSE
+    DBMS_OUTPUT.PUT_LINE(&#x27;OK&#x27;);
+  END IF;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE(&#x27;Produto não encontrado&#x27;);
+END;
+/
+</pre>
+<p><b>Critério:</b> 0,2 SELECT INTO (2 colunas INTO 2 variáveis, FROM PRODUTOS, WHERE id_produto = 20) + 0,2 IF / ELSIF / ELSE (ordem e condições certas) + 0,2 EXCEPTION WHEN NO_DATA_FOUND. Em branco / Não Entregue = 0, sem zerar as objetivas.</p>
+<p><b>Erros mais comuns que tiraram ponto:</b> usar ELSEIF ou ELIF em vez de ELSIF; esquecer o bloco EXCEPTION; SELECT INTO com 1 variável para 2 colunas; usar = NULL em vez de IS NULL (isso era de outra questão, mas apareceu também); trocar as variáveis do INTO pelas declaradas.</p>
+</body></html>

@@ -1,0 +1,48 @@
+DROP TABLE log_produtos;
+DROP TABLE vendas;
+DROP TABLE produtos;
+DROP TABLE avisos reposição;
+
+-- =========================================================
+-- PARTE 1: CRIAÇÃO DAS TABELAS
+-- =========================================================
+
+CREATE TABLE produtos (
+    id_produto NUMBER PRIMARY KEY,
+    nome VARCHAR2(100) NOT NULL,
+    preco NUMBER(10,2) NOT NULL,
+    estoque NUMBER DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE vendas (
+    id_venda NUMBER PRIMARY KEY,
+    id_produto NUMBER NOT NULL,
+    quantidade NUMBER NOT NULL,
+    data_venda DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_venda_produto FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+);
+
+CREATE TABLE log_produtos (
+    id_log NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_produto NUMBER NOT NULL,
+    estoque_antigo NUMBER,
+    estoque_novo NUMBER,
+    preco_antigo NUMBER(10,2),
+    preco_novo NUMBER(10,2),
+    data_alteracao DATE DEFAULT SYSDATE,
+    usuario VARCHAR2(50) DEFAULT USER
+);
+
+CREATE TABLE avisos_reposicao (
+    id_aviso NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_produto NUMBER NOT NULL,
+    mensagem VARCHAR2(200),
+    data_aviso DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_aviso_produto FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+);
+
+-- Dados iniciais
+INSERT INTO produtos VALUES (1, 'Notebook 【entity-Dell¦canonical_name=Dell】', 4500.00, 10);
+INSERT INTO produtos VALUES (2, 'Mouse 【entity-Logitech¦canonical_name=Logitech】', 150.00, 50);
+INSERT INTO produtos VALUES (3, 'Teclado Mecânico', 350.00, 20);
+COMMIT;
